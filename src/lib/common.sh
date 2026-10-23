@@ -1,0 +1,78 @@
+OJUNY_EXIT_OK=0
+OJUNY_EXIT_USAGE=2
+OJUNY_EXIT_DEPENDENCY=3
+OJUNY_EXIT_BACKEND=4
+OJUNY_EXIT_VALIDATION=5
+OJUNY_EXIT_CONFLICT=6
+
+ojuny_err() {
+    printf 'ojuny: %s\n' "$*" >&2
+}
+
+ojuny_die() {
+    local code="$1"
+    shift
+    ojuny_err "$*"
+    exit "$code"
+}
+
+ojuny_require_command() {
+    command -v "$1" >/dev/null 2>&1 ||
+        ojuny_die "$OJUNY_EXIT_DEPENDENCY" "missing required command: $1"
+}
+
+ojuny_confirm() {
+    local prompt="$1"
+    local answer
+
+    if [ "${OJUNY_YES:-0}" -eq 1 ]; then
+        return 0
+    fi
+
+    if [ ! -t 0 ]; then
+        ojuny_err "refusing to continue without --yes"
+        return 1
+    fi
+
+    printf '%s [y/N] ' "$prompt" >&2
+    read -r answer
+
+    case "$answer" in
+    y | Y | yes | YES) return 0 ;;
+    *) return 1 ;;
+    esac
+}
+
+ojuny_is_dry_run() {
+    [ "${OJUNY_DRY_RUN:-0}" -eq 1 ]
+}
+
+ojuny_print_version() {
+    printf '%s %s\n' "$(basename "$0")" "${OJUNY_VERSION:-unknown}"
+}
+
+ojuny_usage_error() {
+    ojuny_err "$*"
+    return "$OJUNY_EXIT_USAGE"
+}
+
+ojuny_trim() {
+    local value="$1"
+    value="${value#"${value%%[![:space:]]*}"}"
+    value="${value%"${value##*[![:space:]]}"}"
+    printf '%s\n' "$value"
+}
+
+ojuny_join_by() {
+    local separator="$1"
+    shift
+    local first=1 value
+    for value in "$@"; do
+        if [ "$first" -eq 1 ]; then
+            printf '%s' "$value"
+            first=0
+        else
+            printf '%s%s' "$separator" "$value"
+        fi
+    done
+}

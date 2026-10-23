@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+: "${OJUNY_LIB_DIR:?OJUNY_LIB_DIR is not set; run ojuny from the packaged wrapper}"
+
+for module in "$OJUNY_LIB_DIR"/*.sh; do
+    source "$module"
+done
+
+for module in "$OJUNY_LIB_DIR"/subtrees/*.sh; do
+    source "$module"
+done
+
+OJUNY_YES="${OJUNY_YES:-0}"
+OJUNY_DRY_RUN="${OJUNY_DRY_RUN:-0}"
+OJUNY_FLAKE="${OJUNY_FLAKE:-}"
+OJUNY_HOST="${OJUNY_HOST:-}"
+
+if [ "$#" -eq 0 ]; then
+    ojuny_usage
+    exit 0
+fi
+
+case "$1" in
+-h | --help)
+    ojuny_usage
+    exit 0
+    ;;
+-V | --version)
+    ojuny_print_version
+    exit 0
+    ;;
+help)
+    shift
+    if [ "$#" -eq 0 ]; then
+        ojuny_usage
+        exit 0
+    fi
+    ojuny_category_help "$1"
+    exit $?
+    ;;
+esac
+
+ojuny_parse_global_options "$@"
+set -- "${OJUNY_ARGS[@]}"
+
+if [ "$#" -eq 0 ]; then
+    ojuny_usage
+    exit 0
+fi
+
+category="$1"
+shift
+
+if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ] || [ "${1:-}" = "help" ]; then
+    ojuny_category_help "$category"
+    exit $?
+fi
+
+case "$category" in
+bar) bar_subtree "$@" ;;
+dock) dock_subtree "$@" ;;
+layout | lay) layout_subtree "$@" ;;
+sound | audio) sound_subtree "$@" ;;
+network | nw | net) network_subtree "$@" ;;
+bluetooth | bt) bluetooth_subtree "$@" ;;
+window | win) window_subtree "$@" ;;
+workspace | ws) workspace_subtree "$@" ;;
+flake) flake_subtree "$@" ;;
+toggle | tgl) toggle_subtree "$@" ;;
+display | disp) display_subtree "$@" ;;
+media | music) media_subtree "$@" ;;
+dashboard | dash) dashboard_subtree "$@" ;;
+island) island_subtree "$@" ;;
+spotlight | spot) spotlight_subtree "$@" ;;
+vpn) vpn_subtree "$@" ;;
+run) run_subtree "$@" ;;
+dispatch) dispatch_subtree "$@" ;;
+dms) dms_subtree "$@" ;;
+capture | shot) capture_subtree "$@" ;;
+clipboard | clip) clipboard_subtree "$@" ;;
+notepad | notes) notepad_subtree "$@" ;;
+keybinds) keybinds_subtree "$@" ;;
+settings | set) settings_subtree "$@" ;;
+system | sys) system_subtree "$@" ;;
+session | sess) session_subtree "$@" ;;
+doctor) doctor_subtree "$@" ;;
+dot)
+    ojuny_err "dot is not available in DMS 1.7; enable it for DMS 2.0"
+    exit "$OJUNY_EXIT_USAGE"
+    ;;
+*)
+    ojuny_err "unknown category: $category"
+    ojuny_usage >&2
+    exit "$OJUNY_EXIT_USAGE"
+    ;;
+esac

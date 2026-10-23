@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+: "${OJUNY_PATCHES_LIB_DIR:?OJUNY_PATCHES_LIB_DIR is not set; run ojuny-patches from the packaged wrapper}"
+
+for module in "$OJUNY_PATCHES_LIB_DIR"/*.sh; do
+    source "$module"
+done
+
+OJUNY_YES="${OJUNY_YES:-0}"
+OJUNY_DRY_RUN="${OJUNY_DRY_RUN:-0}"
+OJUNY_FLAKE="${OJUNY_FLAKE:-}"
+OJUNY_HOST="${OJUNY_HOST:-}"
+
+if [ "$#" -eq 0 ]; then
+    patches_usage
+    exit 0
+fi
+
+case "$1" in
+-h | --help | help)
+    patches_usage
+    exit 0
+    ;;
+-V | --version)
+    ojuny_print_version
+    exit 0
+    ;;
+esac
+
+ojuny_parse_global_options "$@"
+set -- "${OJUNY_ARGS[@]}"
+
+if [ "$#" -eq 0 ]; then
+    patches_usage
+    exit 0
+fi
+
+patches_main "$@"
