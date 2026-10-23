@@ -51,10 +51,10 @@ ojuny_category_help() {
     bar)
         cat <<'EOF'
 Usage: ojuny bar <command>
+  preset <name>     Switch a non-island bar preset at runtime
   toggle
   show
   hide
-  preset <name>     Persistent setting, use the settings GUI
   autohide <value>  Persistent setting, use the settings GUI
   move <edge>       Persistent setting, use the settings GUI
 EOF

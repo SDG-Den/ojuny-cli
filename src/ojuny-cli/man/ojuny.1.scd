@@ -40,6 +40,10 @@ category is the exception and changes the system through Nix.
 
 # COMMANDS
 
+*bar* *preset* <name>
+	Switch a non-island bar preset at runtime. Island presets need a save
+	and rebuild.
+
 *bar* *toggle*|*show*|*hide*
 	Control bar visibility.
 

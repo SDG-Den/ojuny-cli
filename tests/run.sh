@@ -45,6 +45,15 @@ for name in mmsg dms nmcli bluetoothctl wpctl playerctl wg wg-quick systemctl lo
     write_fake "$name"
 done
 
+cat >"$tmp/bin/dms" <<EOF
+#!$BASH
+printf '%s:%s\n' "dms" "\$*" >>"\$TEST_LOG"
+if [ "\$*" = "ipc call settings get barConfigs" ]; then
+    printf '%s\n' '[{"id":"default","island":true},{"id":"taskbar","island":false},{"id":"status","island":false},{"id":"caelestia","island":false}]'
+fi
+EOF
+chmod +x "$tmp/bin/dms"
+
 export PATH="$tmp/bin:$PATH"
 
 ojuny_prefix="$(cd "$(dirname "$OJUNY_BIN")/.." && pwd)"
@@ -77,6 +86,17 @@ assert_contains "$log" "dms:ipc call settings focusOrToggleWith network"
 assert_contains "$log" "dms:screenshot full"
 assert_contains "$log" "mmsg:dispatch quit"
 assert_contains "$log" "loginctl:lock-session"
+
+ojuny_cli bar preset taskbar
+ojuny_cli bar preset caelestia
+assert_status 5 ojuny_cli bar preset default
+assert_status 2 ojuny_cli bar preset nope
+log="$(cat "$TEST_LOG")"
+assert_contains "$log" "dms:ipc call settings set frameEnabled false"
+assert_contains "$log" "dms:ipc call settings set frameEnabled true"
+assert_contains "$log" "dms:ipc call bar hide id status"
+assert_contains "$log" "dms:ipc call bar reveal id taskbar"
+assert_contains "$log" "dms:ipc call bar reveal id caelestia"
 
 assert_contains "$("$OJUNY_PATCHES_BIN" --help)" "Usage: ojuny-patches"
 assert_contains "$("$OJUNY_PATCHES_BIN" --version)" "ojuny-patches"

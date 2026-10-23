@@ -86,6 +86,18 @@ dms_bar_toggle() {
     dms_call bar toggle
 }
 
+dms_bar_hide_id() {
+    dms_call bar hide id "$1"
+}
+
+dms_bar_reveal_id() {
+    dms_call bar reveal id "$1"
+}
+
+dms_settings_set() {
+    dms_call settings set "$1" "$2"
+}
+
 dms_dock_toggle() {
     dms_call dock toggle
 }
