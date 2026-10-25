@@ -1,6 +1,6 @@
 bar_preset() {
     local preset="${1:-}"
-    local configs island
+    local configs island enabled
 
     if [ -z "$preset" ]; then
         ojuny_err "usage: ojuny bar preset <name>"
@@ -10,10 +10,19 @@ bar_preset() {
     ojuny_require_command jq
     configs="$(dms_call settings get barConfigs)" || return $?
 
-    island="$(printf '%s' "$configs" | jq -r --arg id "$preset" '.[] | select(.id == $id) | .island // false' | head -n 1)"
+    IFS=$'\t' read -r island enabled < <(
+        printf '%s' "$configs" |
+            jq -r --arg id "$preset" '.[] | select(.id == $id) | "\(.island // false)\t\(if .enabled == null then true else .enabled end)"' |
+            head -n 1
+    ) || true
     if [ -z "$island" ]; then
         ojuny_err "unknown bar preset: $preset"
         return "$OJUNY_EXIT_USAGE"
+    fi
+
+    if [ "$enabled" = "false" ]; then
+        ojuny_err "bar preset '$preset' is not enabled; save and rebuild to activate it"
+        return "$OJUNY_EXIT_VALIDATION"
     fi
 
     if [ "$island" = "true" ]; then

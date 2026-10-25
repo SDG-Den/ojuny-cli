@@ -49,7 +49,7 @@ cat >"$tmp/bin/dms" <<EOF
 #!$BASH
 printf '%s:%s\n' "dms" "\$*" >>"\$TEST_LOG"
 if [ "\$*" = "ipc call settings get barConfigs" ]; then
-    printf '%s\n' '[{"id":"default","island":true},{"id":"taskbar","island":false},{"id":"status","island":false},{"id":"caelestia","island":false}]'
+    printf '%s\n' '[{"id":"default","island":true},{"id":"taskbar","island":false},{"id":"status","island":false},{"id":"caelestia","island":false},{"id":"disabled","island":false,"enabled":false}]'
 fi
 EOF
 chmod +x "$tmp/bin/dms"
@@ -90,6 +90,7 @@ assert_contains "$log" "loginctl:lock-session"
 ojuny_cli bar preset taskbar
 ojuny_cli bar preset caelestia
 assert_status 5 ojuny_cli bar preset default
+assert_status 5 ojuny_cli bar preset disabled
 assert_status 2 ojuny_cli bar preset nope
 log="$(cat "$TEST_LOG")"
 assert_contains "$log" "dms:ipc call settings set frameEnabled false"
