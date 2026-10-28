@@ -2,7 +2,7 @@ ojuny(1)
 
 # NAME
 
-ojuny - thin command line wrapper for the ojuny desktop
+ojuny - thin command line wrapper for Dux Shell
 
 # SYNOPSIS
 
@@ -13,6 +13,9 @@ ojuny - thin command line wrapper for the ojuny desktop
 *ojuny* maps a category and command to a small backend wrapper. It runs
 *mmsg*, *dms*, *nmcli*, *bluetoothctl*, *wpctl*, *playerctl*, *wg*,
 *systemctl*, *loginctl*, *nix*, and *nixos-rebuild* as needed.
+
+Dux Shell is the desktop shell product. The upstream runtime binary is still
+*dms*, and IPC still runs through *dms ipc call*.
 
 Most commands affect the running session only. A reload or rebuild may discard
 a runtime change. Persistent settings belong in the settings GUI. The *flake*
@@ -109,8 +112,11 @@ category is the exception and changes the system through Nix.
 *dispatch* <dispatcher> [arguments]
 	Raw *mmsg dispatch*.
 
+*dux* *start*, *stop*, *restart*, *status*, *ipc* <arguments>
+	Dux Shell lifecycle and raw IPC through the *dms* binary.
+
 *dms* *start*, *stop*, *restart*, *status*, *ipc* <arguments>
-	DMS lifecycle and raw IPC.
+	Deprecated alias for *dux*. Prints a warning and forwards.
 
 *capture* *toolbar*, *region*, *full*, *window*
 	Screenshots and recording.

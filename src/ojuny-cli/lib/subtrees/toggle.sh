@@ -1,10 +1,10 @@
 toggle_subtree() {
     case "${1:-}" in
     night)
-        dms_night_toggle
+        dux_night_toggle
         ;;
     idle)
-        dms_inhibit_toggle
+        dux_inhibit_toggle
         ;;
     sleep)
         system_suspend
@@ -13,7 +13,7 @@ toggle_subtree() {
         system_lock
         ;;
     dnd)
-        dms_dnd_toggle
+        dux_dnd_toggle
         ;;
     *)
         ojuny_err "usage: ojuny toggle <night|idle|sleep|lockscreen|screensaver|dnd>"

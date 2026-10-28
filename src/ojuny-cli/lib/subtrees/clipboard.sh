@@ -1,10 +1,10 @@
 clipboard_subtree() {
     case "${1:-}" in
     open)
-        dms_clipboard_open
+        dux_clipboard_open
         ;;
     clear)
-        dms_clipboard_clear
+        dux_clipboard_clear
         ;;
     *)
         ojuny_err "usage: ojuny clipboard <open|clear>"

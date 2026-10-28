@@ -185,5 +185,10 @@ start application via mmsg dispatch spawn_shell
 raw mmsg dispatch <X>,<Y>
 
 
-# dms
-raw dms ipc call <x> <y> 
+# dux
+
+raw dms ipc call <x> <y>
+
+lifecycle: start / stop / restart / status
+
+`ojuny dms` is a deprecated alias that warns and forwards to `ojuny dux`.

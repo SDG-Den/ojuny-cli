@@ -29,7 +29,7 @@ Categories:
   vpn          WireGuard
   run          Launch an application
   dispatch     Raw mmsg dispatch
-  dms          DMS IPC and lifecycle
+  dux          Dux Shell IPC and lifecycle (alias: dms)
   capture      Screenshots and recording
   clipboard    Clipboard
   notepad      Notepad
@@ -234,15 +234,21 @@ EOF
 Usage: ojuny dispatch <dispatcher> [arguments]
 EOF
         ;;
-    dms)
+    dux)
         cat <<'EOF'
-Usage: ojuny dms <command>
+Usage: ojuny dux <command>
   start
   stop
   restart
   status
   ipc <arguments>
+
+'dms' is a deprecated alias for 'dux'.
 EOF
+        ;;
+    dms)
+        dux_deprecation_warning
+        ojuny_category_help dux
         ;;
     capture | shot)
         cat <<'EOF'

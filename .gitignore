@@ -7,3 +7,6 @@ result-*
 
 # Ignore NixOS interactive test driver history
 **/.nixos-test-history
+
+# Local planning documents, not part of the published docs
+docs/llm/

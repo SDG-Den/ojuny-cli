@@ -3,6 +3,9 @@ doctor_subtree() {
     local flake=""
     local host=""
     local command
+    local config_root="${XDG_CONFIG_HOME:-$HOME/.config}"
+    local dux_config="$config_root/dms"
+    local legacy_config="$config_root/DankMaterialShell"
 
     if flake="$(ojuny_flake_root)"; then
         printf 'flake: %s\n' "$flake"
@@ -20,6 +23,17 @@ doctor_subtree() {
         fi
     else
         printf 'host: unknown\n'
+    fi
+
+    if [ -d "$dux_config" ]; then
+        printf 'ok: config %s\n' "$dux_config"
+    else
+        printf 'missing: config %s\n' "$dux_config"
+        status=1
+    fi
+
+    if [ -d "$legacy_config" ]; then
+        printf 'legacy: config %s exists; Dux Shell now uses %s\n' "$legacy_config" "$dux_config"
     fi
 
     for command in mmsg dms nmcli bluetoothctl wpctl playerctl wg wg-quick nix git jq; do

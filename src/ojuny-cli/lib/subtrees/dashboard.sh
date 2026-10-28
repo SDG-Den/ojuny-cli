@@ -8,17 +8,17 @@ dashboard_subtree() {
             ojuny_err "usage: ojuny dashboard open <tab>"
             return "$OJUNY_EXIT_USAGE"
         fi
-        dms_dashboard_open "$1"
+        dux_dashboard_open "$1"
         ;;
     close)
-        dms_dashboard_close
+        dux_dashboard_close
         ;;
     toggle)
         if [ "$#" -lt 1 ]; then
             ojuny_err "usage: ojuny dashboard toggle <tab>"
             return "$OJUNY_EXIT_USAGE"
         fi
-        dms_dashboard_toggle "$1"
+        dux_dashboard_toggle "$1"
         ;;
     *)
         ojuny_err "usage: ojuny dashboard <open|close|toggle>"

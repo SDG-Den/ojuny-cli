@@ -4,5 +4,5 @@ session_quit() {
 }
 
 session_restart() {
-    dms_restart
+    dux_restart
 }

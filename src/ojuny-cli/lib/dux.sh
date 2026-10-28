@@ -1,0 +1,163 @@
+dux_deprecation_warning() {
+    ojuny_err "warning: 'ojuny dms' is deprecated; use 'ojuny dux'"
+}
+
+dux_call() {
+    local object="$1"
+    local method="$2"
+    shift 2
+    ojuny_require_command dms
+    dms ipc call "$object" "$method" "$@"
+}
+
+dux_ipc() {
+    ojuny_require_command dms
+    dms ipc "$@"
+}
+
+dux_start() {
+    ojuny_require_command dms
+    dms run
+}
+
+dux_stop() {
+    ojuny_require_command dms
+    dms kill
+}
+
+dux_restart() {
+    ojuny_require_command dms
+    dms kill
+    if command -v mmsg >/dev/null 2>&1; then
+        mdispatch spawn_shell "dms run"
+    else
+        dms run
+    fi
+}
+
+dux_status() {
+    ojuny_require_command dms
+    dms --version
+}
+
+dux_screenshot() {
+    ojuny_require_command dms
+    dms screenshot "$@"
+}
+
+dux_settings_open() {
+    local page="$1"
+    dux_call settings focusOrToggleWith "$page"
+}
+
+dux_network_open() {
+    dux_settings_open network
+}
+
+dux_keybinds_open() {
+    dux_call keybinds open binds
+}
+
+dux_clipboard_open() {
+    dux_call clipboard toggle
+}
+
+dux_clipboard_clear() {
+    dux_call clipboard clear
+}
+
+dux_notepad_toggle() {
+    dux_call notepad toggle
+}
+
+dux_spotlight_toggle() {
+    dux_call spotlight toggle
+}
+
+dux_spotlight_query() {
+    dux_call spotlight toggleQuery "$1"
+}
+
+dux_controlcenter_toggle() {
+    dux_call control-center toggle
+}
+
+dux_menu_toggle() {
+    dux_call dankMenu toggle root
+}
+
+dux_bar_toggle() {
+    dux_call bar toggle
+}
+
+dux_bar_hide_id() {
+    dux_call bar hide id "$1"
+}
+
+dux_bar_reveal_id() {
+    dux_call bar reveal id "$1"
+}
+
+dux_settings_set() {
+    dux_call settings set "$1" "$2"
+}
+
+dux_dock_toggle() {
+    dux_call dock toggle
+}
+
+dux_inhibit_toggle() {
+    dux_call inhibit toggle
+}
+
+dux_inhibit_status() {
+    dux_call inhibit status
+}
+
+dux_night_toggle() {
+    dux_call night toggle
+}
+
+dux_night_status() {
+    dux_call night status
+}
+
+dux_dnd_toggle() {
+    dux_call notifications toggleDoNotDisturb
+}
+
+dux_dashboard_open() {
+    dux_call dash open "$1"
+}
+
+dux_dashboard_close() {
+    dux_call dash close
+}
+
+dux_dashboard_toggle() {
+    dux_call dash toggle "$1"
+}
+
+dux_island_open() {
+    dux_call island open "$1"
+}
+
+dux_island_show() {
+    dux_call island open "$1"
+}
+
+dux_island_cycle() {
+    dux_call island cycle
+}
+
+dux_island_move() {
+    dux_call island move "$@"
+}
+
+dux_island_center() {
+    dux_call island center "$@"
+}
+
+dux_capture_toolbar() {
+    dux_call screenCaptureToolbar toggle
+}

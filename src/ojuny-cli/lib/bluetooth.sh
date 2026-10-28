@@ -1,5 +1,5 @@
 bluetooth_open() {
-    dms_controlcenter_toggle
+    dux_controlcenter_toggle
 }
 
 bluetooth_status() {

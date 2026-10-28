@@ -1,16 +1,16 @@
 capture_subtree() {
     case "${1:-}" in
     toolbar)
-        dms_capture_toolbar
+        dux_capture_toolbar
         ;;
     region)
-        dms_screenshot
+        dux_screenshot
         ;;
     full)
-        dms_screenshot full
+        dux_screenshot full
         ;;
     window)
-        dms_screenshot window
+        dux_screenshot window
         ;;
     *)
         ojuny_err "usage: ojuny capture <toolbar|region|full|window>"

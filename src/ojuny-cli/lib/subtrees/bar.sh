@@ -8,7 +8,7 @@ bar_preset() {
     fi
 
     ojuny_require_command jq
-    configs="$(dms_call settings get barConfigs)" || return $?
+    configs="$(dux_call settings get barConfigs)" || return $?
 
     IFS=$'\t' read -r island enabled < <(
         printf '%s' "$configs" |
@@ -31,19 +31,19 @@ bar_preset() {
     fi
 
     if [ "$preset" = "caelestia" ] || [ "$preset" = "frame" ]; then
-        dms_settings_set frameEnabled true >/dev/null || return $?
+        dux_settings_set frameEnabled true >/dev/null || return $?
     else
-        dms_settings_set frameEnabled false >/dev/null || return $?
+        dux_settings_set frameEnabled false >/dev/null || return $?
     fi
 
     local id
     while IFS= read -r id; do
         if [ -n "$id" ]; then
-            dms_bar_hide_id "$id" >/dev/null 2>&1 || true
+            dux_bar_hide_id "$id" >/dev/null 2>&1 || true
         fi
     done < <(printf '%s' "$configs" | jq -r '.[] | select((.island // false) == false) | .id')
 
-    dms_bar_reveal_id "$preset"
+    dux_bar_reveal_id "$preset"
 }
 
 bar_subtree() {
@@ -53,13 +53,13 @@ bar_subtree() {
         bar_preset "$@"
         ;;
     toggle)
-        dms_bar_toggle
+        dux_bar_toggle
         ;;
     show)
-        dms_call bar show
+        dux_call bar show
         ;;
     hide)
-        dms_call bar hide
+        dux_call bar hide
         ;;
     autohide | move)
         ojuny_err "persistent setting; use 'ojuny settings open bar'"

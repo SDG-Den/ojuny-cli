@@ -1,25 +1,25 @@
-dms_subtree() {
+dux_subtree() {
     local command="${1:-}"
     shift || true
 
     case "$command" in
     start)
-        dms_start
+        dux_start
         ;;
     stop)
-        dms_stop
+        dux_stop
         ;;
     restart)
-        dms_restart
+        dux_restart
         ;;
     status)
-        dms_status
+        dux_status
         ;;
     ipc)
-        dms_ipc "$@"
+        dux_ipc "$@"
         ;;
     *)
-        ojuny_err "usage: ojuny dms <start|stop|restart|status|ipc>"
+        ojuny_err "usage: ojuny dux <start|stop|restart|status|ipc>"
         return "$OJUNY_EXIT_USAGE"
         ;;
     esac

@@ -1,5 +1,5 @@
 network_open() {
-    dms_network_open
+    dux_network_open
 }
 
 network_status() {
